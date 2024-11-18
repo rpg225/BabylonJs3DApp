@@ -11,7 +11,7 @@ function createScene() {
     const scene = new BABYLON.Scene(engine);
 
     // Camera
-    const camera = new BABYLON.FreeCamera('camera', new BABYLON.Vector3(0,0, -11), scene)
+    const camera = new BABYLON.FreeCamera('camera', new BABYLON.Vector3(0,0, -10), scene)
 
     // Create a Light 
     const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 1, 0));
