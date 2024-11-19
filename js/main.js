@@ -55,11 +55,27 @@ function createPlanet(scene){
     // remove highlight from the material
     planetMaterial.specularColor = BABYLON.Color3.Black();
     
-    const planet = BABYLON.MeshBuilder.CreateSphere('planet', { segments: 16, diameter: 1 }, scene);
+    const speeds = [0.01, -0.01, 0.02];
+    for ( let i = 0; i < 3; i += 1 ) {
+        const planet = BABYLON.MeshBuilder.CreateSphere(`planet${i}`, { segments: 16, diameter: 1 }, scene);
     
-    planet.position.x = 4;
+        planet.position.x = (2 * i) + 4;
+    
+        planet.material = planetMaterial;
+    
+        planet.orbit = {
+            radius: planet.position.x,
+            speed: speeds[i],
+            angle: 0,
+        }
+    
+        scene.registerBeforeRender(() => {
+            planet.position.x = planet.orbit.radius * Math.sin(planet.orbit.angle);
+            planet.position.z = planet.orbit.radius * Math.cos(planet.orbit.angle);
+            planet.orbit.angle += planet.orbit.speed;
+        });
+    }
 
-    planet.material = planetMaterial;
 
 }
 
@@ -87,6 +103,16 @@ function createSkybox(scene){
 
 }
 
+function createShip(scene) {
+    BABYLON.SceneLoader.ImportMesh('', './assets/models/', 'spaceCraft1.obj', scene, (meshes) => {
+      console.log(meshes);
+      meshes.forEach((mesh) => {
+        mesh.position = new BABYLON.Vector3(0, -5, 10);
+        mesh.scaling = new BABYLON.Vector3(0.2, 0.2, 0.2);
+      });
+    })
+  }
+
 
 function createScene() {
     // 3d scene
@@ -111,6 +137,9 @@ function createScene() {
     // skybox
 
     createSkybox(scene);
+
+    // create ship
+    createShip(scene);
 
 
     return scene;
