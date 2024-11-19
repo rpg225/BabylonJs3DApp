@@ -63,6 +63,30 @@ function createPlanet(scene){
 
 }
 
+function createSkybox(scene){
+
+    // create a skybox
+    const skybox = BABYLON.MeshBuilder.CreateBox('skybox', {size: 1000}, scene);
+
+    // create a material
+    const skyboxMaterial = new BABYLON.StandardMaterial('skyboxMaterial', scene) ;
+
+    skyboxMaterial.backFaceCulling = false;
+
+    skybox.infiniteDistance = true;
+
+    skyboxMaterial.specularColor = BABYLON.Color3.Black();
+    skyboxMaterial.diffuseColor = BABYLON.Color3.Black();
+
+    // create a reflection texture
+    skyboxMaterial.reflectionTexture = new BABYLON.CubeTexture('assets/images/skybox/skybox', scene);
+    skyboxMaterial.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;
+    
+    // applying th material
+    skybox.material = skyboxMaterial;
+
+}
+
 
 function createScene() {
     // 3d scene
@@ -83,6 +107,10 @@ function createScene() {
 
     // create planet
     createPlanet(scene);
+
+    // skybox
+
+    createSkybox(scene);
 
 
     return scene;
